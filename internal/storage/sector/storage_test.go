@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSectors_Add(t *testing.T) {
+func TestIMDB_Add(t *testing.T) {
 	sectors := New()
 	clientReq := []dto.ListSectorReq{
 		{{AvailableDNS: 12}, {AvailableDNS: 11}, {AvailableDNS: 9}},
@@ -40,23 +40,18 @@ func TestSectors_Add(t *testing.T) {
 	compareListSectorReqResp(t, allRequests, sectors.List())
 }
 
-func TestSectors_List(t *testing.T) {
+func TestIMDB_List(t *testing.T) {
 	sectors := New()
+	listReq := dto.ListSectorReq{{AvailableDNS: 12}, {AvailableDNS: 11}, {AvailableDNS: 9}}
+	resp := sectors.Add(listReq)
+	compareListSectorReqResp(t, listReq, resp)
 
-	t.Run("client-read", func(t *testing.T) {
-		t.Parallel()
-		list := sectors.List()
-		assert.Empty(t, list)
-	})
-	t.Run("client-write", func(t *testing.T) {
-		t.Parallel()
-		listReq := dto.ListSectorReq{{AvailableDNS: 12}, {AvailableDNS: 11}, {AvailableDNS: 9}}
-		resp := sectors.Add(listReq)
-		compareListSectorReqResp(t, listReq, resp)
-	})
+	t.Parallel()
+	resp = sectors.List()
+	compareListSectorReqResp(t, listReq, resp)
 }
 
-func TestSectors_Get(t *testing.T) {
+func TestIMDB_Get(t *testing.T) {
 	sectors := New()
 	req := dto.ListSectorReq{{AvailableDNS: 12}, {AvailableDNS: 11}, {AvailableDNS: 9}}
 	resp := sectors.Add(req)

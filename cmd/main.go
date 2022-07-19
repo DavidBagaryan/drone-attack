@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -16,7 +17,7 @@ func main() {
 	impl := app.New(sectors, dns_storage.New())
 
 	sectorDroneCron := sector_drone_cron.New(config.SectorDroneCronDuration, sectors)
-	go sectorDroneCron.Run()
+	go sectorDroneCron.Run(context.Background())
 
 	// this (subject/action) looks a little ugly, but I don't want to implement dispatcher
 	// or add smth like gorilla

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDNS_List(t *testing.T) {
+func TestIMDB_List(t *testing.T) {
 	dns := New()
 	var err error
 
@@ -30,39 +30,26 @@ func TestDNS_List(t *testing.T) {
 		dns3.Location: dns3,
 	}
 
-	t.Run("client-read-1", func(t *testing.T) {
-		t.Parallel()
-		list := dns.List()
-		assert.Empty(t, list)
-	})
-	t.Run("client-read-2", func(t *testing.T) {
-		t.Parallel()
-		dns.data = dnsData
-		listResp := dns.List()
-		compareDNSStorageDataAndRespList(t, dnsData, listResp)
-	})
+	dns.data = dnsData
+	listResp := dns.List()
+	compareDNSStorageDataAndRespList(t, dnsData, listResp)
 }
 
-func TestDNS_Set(t *testing.T) {
+func TestIMDB_Set(t *testing.T) {
 	dns := New()
 	general := new(dto.DNSResp)
 	_ = gofakeit.Struct(general)
 	dns.Set(general)
 
-	t.Run("reader-1", func(t *testing.T) {
-		t.Parallel()
-		listResp := dns.List()
-		compareDNSStorageDataAndRespList(t, data{general.Location: general}, listResp)
-	})
-	t.Run("writer-2", func(t *testing.T) {
-		t.Parallel()
-		upd := new(dto.DNSResp)
-		_ = gofakeit.Struct(upd)
-		upd.Location = general.Location
-		dns.Set(upd)
-		listResp := dns.List()
-		compareDNSStorageDataAndRespList(t, data{upd.Location: upd}, listResp)
-	})
+	listResp := dns.List()
+	compareDNSStorageDataAndRespList(t, data{general.Location: general}, listResp)
+
+	upd := new(dto.DNSResp)
+	_ = gofakeit.Struct(upd)
+	upd.Location = general.Location
+	dns.Set(upd)
+	listResp = dns.List()
+	compareDNSStorageDataAndRespList(t, data{upd.Location: upd}, listResp)
 }
 
 func compareDNSStorageDataAndRespList(t *testing.T, data data, resp dto.ListDNSResp) {

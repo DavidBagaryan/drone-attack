@@ -7,8 +7,8 @@ import (
 	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
-// Sectors runtime storage
-type Sectors struct {
+// IMDB runtime storage
+type IMDB struct {
 	sync.RWMutex
 	data data
 }
@@ -16,14 +16,14 @@ type Sectors struct {
 type data map[uint64]*dto.SectorResp
 
 // Add adds butch of sectors
-func (s *Sectors) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
+func (s *IMDB) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
 	s.Lock()
 	defer s.Unlock()
 
 	for _, sectorReq := range req {
-		id := uint64(len(s.data))
-		sector := sectorReq.SectorRespWithID(id)
-		s.data[id] = sector
+		nextID := uint64(len(s.data))
+		sector := sectorReq.SectorRespWithID(nextID)
+		s.data[nextID] = sector
 		added = append(added, sector)
 	}
 
@@ -31,7 +31,7 @@ func (s *Sectors) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
 }
 
 // Get fetches sector by id
-func (s *Sectors) Get(id uint64) (*dto.SectorResp, error) {
+func (s *IMDB) Get(id uint64) (*dto.SectorResp, error) {
 	s.RLock()
 	resp, ok := s.data[id]
 	s.RUnlock()
@@ -44,7 +44,7 @@ func (s *Sectors) Get(id uint64) (*dto.SectorResp, error) {
 }
 
 // List lists existed sectors
-func (s *Sectors) List() (list dto.ListSectorResp) {
+func (s *IMDB) List() (list dto.ListSectorResp) {
 	s.RLock()
 	defer s.RUnlock()
 
@@ -55,9 +55,9 @@ func (s *Sectors) List() (list dto.ListSectorResp) {
 	return
 }
 
-//New sector Sectors constructor
-func New() *Sectors {
-	s := &Sectors{
+//New sector IMDB constructor
+func New() *IMDB {
+	s := &IMDB{
 		data: make(data),
 	}
 	return s

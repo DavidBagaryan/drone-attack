@@ -3,7 +3,7 @@ package dto
 import (
 	"encoding/json"
 	"errors"
-	"sync/atomic"
+	"sync"
 )
 
 // ListSectorResp sector list response
@@ -11,10 +11,12 @@ type ListSectorResp []*SectorResp
 
 // SectorResp sector in storage
 type SectorResp struct {
-	ID           uint64
-	AvailableDNS uint64
-	DeployedDNS  uint64
-	DroneCount   uint64
+	ID           uint64 `json:"id"`
+	AvailableDNS uint64 `json:"available_dns"`
+	DeployedDNS  uint64 `json:"deployed_dns"`
+	DroneCount   uint64 `json:"drone_count"`
+	Rotation     int    `json:"-"`
+	sync.RWMutex
 }
 
 func (s *SectorResp) String() string {
@@ -27,12 +29,16 @@ func (s *SectorResp) Book() (uint64, error) {
 	if s == nil {
 		return 0, errors.New("sector is undefined")
 	}
+
+	s.Lock()
+	defer s.Unlock()
+
 	if s.AvailableDNS == 0 {
 		return 0, errors.New("no vacancies found")
 	}
 
-	atomic.AddUint64(&s.AvailableDNS, ^uint64(0))
-	atomic.AddUint64(&s.DeployedDNS, 1)
+	s.AvailableDNS--
+	s.DeployedDNS++
 
 	return s.ID, nil
 }

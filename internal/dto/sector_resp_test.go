@@ -28,7 +28,7 @@ func TestSectorResp_Book(t *testing.T) {
 	}
 
 	wg.Wait()
-	assert.Equal(t, &SectorResp{ID: 777, AvailableDNS: 1, DeployedDNS: 1000, DroneCount: 0}, sector)
+	assert.Equal(t, &SectorResp{ID: 777, AvailableDNS: 1, DeployedDNS: 1000, DroneCount: 0, Rotation: 0}, sector)
 
 	// second try
 
@@ -36,12 +36,12 @@ func TestSectorResp_Book(t *testing.T) {
 	sID, err := sector.Book()
 	assert.Equal(t, sector.ID, sID)
 	assert.NoError(t, err)
-	assert.Equal(t, &SectorResp{ID: 666, AvailableDNS: 0, DeployedDNS: 1, DroneCount: 0}, sector)
+	assert.Equal(t, &SectorResp{ID: 666, AvailableDNS: 0, DeployedDNS: 1, DroneCount: 0, Rotation: 0}, sector)
 
 	sID, err = sector.Book()
 	assert.Equal(t, uint64(0), sID)
 	assert.Equal(t, errors.New("no vacancies found"), err)
-	assert.Equal(t, &SectorResp{ID: 666, AvailableDNS: 0, DeployedDNS: 1, DroneCount: 0}, sector)
+	assert.Equal(t, &SectorResp{ID: 666, AvailableDNS: 0, DeployedDNS: 1, DroneCount: 0, Rotation: 0}, sector)
 
 	sector = nil
 	sID, err = sector.Book()
