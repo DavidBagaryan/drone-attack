@@ -6,23 +6,16 @@ import (
 	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
-type dns struct {
+// DNS drone navigation service runtime storage
+type DNS struct {
 	sync.RWMutex
 	data data
 }
 
 type data map[float64]*dto.DNSResp
 
-// Set adds dns to storage
-func (s *dns) Set(dns *dto.DNSResp) {
-	s.RLock()
-	defer s.RUnlock()
-
-	s.data[dns.Location] = dns
-}
-
 // List composes dto.ListDNSResp
-func (s *dns) List() (list dto.ListDNSResp) {
+func (s *DNS) List() (list dto.ListDNSResp) {
 	s.RLock()
 	defer s.RUnlock()
 
@@ -33,9 +26,17 @@ func (s *dns) List() (list dto.ListDNSResp) {
 	return
 }
 
-// New runtime dns storage
-func New() *dns {
-	return &dns{
+// Set adds DNS to storage
+func (s *DNS) Set(dns *dto.DNSResp) {
+	s.Lock()
+	defer s.Unlock()
+
+	s.data[dns.Location] = dns
+}
+
+// New runtime DNS storage
+func New() *DNS {
+	return &DNS{
 		data: make(data),
 	}
 }

@@ -7,16 +7,18 @@ import (
 	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
-type storage struct {
+// Sectors runtime storage
+type Sectors struct {
 	sync.RWMutex
 	data data
 }
 
 type data map[uint64]*dto.SectorResp
 
-func (s *storage) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
-	s.RLock()
-	defer s.RUnlock()
+// Add adds butch of sectors
+func (s *Sectors) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
+	s.Lock()
+	defer s.Unlock()
 
 	for _, sectorReq := range req {
 		id := uint64(len(s.data))
@@ -27,7 +29,22 @@ func (s *storage) Add(req dto.ListSectorReq) (added dto.ListSectorResp) {
 
 	return
 }
-func (s *storage) List() (list dto.ListSectorResp) {
+
+// Get fetches sector by id
+func (s *Sectors) Get(id uint64) (*dto.SectorResp, error) {
+	s.RLock()
+	resp, ok := s.data[id]
+	s.RUnlock()
+
+	if !ok {
+		return nil, fmt.Errorf("sector id %d not found", id)
+	}
+
+	return resp, nil
+}
+
+// List lists existed sectors
+func (s *Sectors) List() (list dto.ListSectorResp) {
 	s.RLock()
 	defer s.RUnlock()
 
@@ -38,18 +55,9 @@ func (s *storage) List() (list dto.ListSectorResp) {
 	return
 }
 
-func (s *storage) Get(id uint64) (*dto.SectorResp, error) {
-	resp, ok := s.data[id]
-	if !ok {
-		return nil, fmt.Errorf("sector id %d not found", id)
-	}
-
-	return resp, nil
-}
-
-//New sector storage constructor
-func New() *storage {
-	s := &storage{
+//New sector Sectors constructor
+func New() *Sectors {
+	s := &Sectors{
 		data: make(data),
 	}
 	return s
