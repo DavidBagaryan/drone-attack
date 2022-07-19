@@ -23,7 +23,7 @@ func main() {
 	http.HandleFunc("/sectors/add", impl.AddSectors)
 	http.HandleFunc("/sectors/list", impl.ListSectors)
 	http.HandleFunc("/sector/locate", impl.LocateDNS) // sectorID passes as a query param
-	http.HandleFunc("/dns/list", impl.ListDNS)        // sectorID passes as a query param
+	http.HandleFunc("/dns/list", impl.ListDNS)
 
 	log.Fatal(http.ListenAndServe(config.LocalDeployPort, nil))
 }
