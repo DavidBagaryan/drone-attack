@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"drone-attack/internal/dto"
+	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
 type storage struct {

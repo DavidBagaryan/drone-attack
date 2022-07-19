@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	"drone-attack/internal/dto"
+	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
 type sectors interface {

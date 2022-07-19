@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"drone-attack/internal/dto"
+	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
 // AddSectors adds sectors by giving params

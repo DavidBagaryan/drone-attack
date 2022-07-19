@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"drone-attack/internal/app"
-	"drone-attack/internal/config"
-	sector_drone_cron "drone-attack/internal/cron/sector-drone"
-	dns_storage "drone-attack/internal/storage/dns"
-	sector_storage "drone-attack/internal/storage/sector"
+	"github.com/DavidBagaryan/drone-attack/internal/app"
+	"github.com/DavidBagaryan/drone-attack/internal/config"
+	sector_drone_cron "github.com/DavidBagaryan/drone-attack/internal/cron/sector-drone"
+	dns_storage "github.com/DavidBagaryan/drone-attack/internal/storage/dns"
+	sector_storage "github.com/DavidBagaryan/drone-attack/internal/storage/sector"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	http.HandleFunc("/sectors/add", impl.AddSectors)
 	http.HandleFunc("/sectors/list", impl.ListSectors)
 	http.HandleFunc("/sector/locate", impl.LocateDNS) // sectorID passes as a query param
-	http.HandleFunc("/dns/list", impl.ListDNS) // sectorID passes as a query param
+	http.HandleFunc("/dns/list", impl.ListDNS)        // sectorID passes as a query param
 
 	log.Fatal(http.ListenAndServe(config.LocalDeployPort, nil))
 }

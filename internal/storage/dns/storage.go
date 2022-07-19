@@ -3,7 +3,7 @@ package dns_storage
 import (
 	"sync"
 
-	"drone-attack/internal/dto"
+	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
 type dns struct {

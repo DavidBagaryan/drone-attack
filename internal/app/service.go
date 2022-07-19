@@ -1,6 +1,6 @@
 package app
 
-import "drone-attack/internal/dto"
+import "github.com/DavidBagaryan/drone-attack/internal/dto"
 
 // DNS data storage for drone navigation service
 type DNS interface {

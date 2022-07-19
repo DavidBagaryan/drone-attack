@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"drone-attack/internal/dto"
+	"github.com/DavidBagaryan/drone-attack/internal/dto"
 )
 
 // LocateDNS locates dns by coordinates and given sectorID in url query
