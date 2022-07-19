@@ -9,6 +9,15 @@ import (
 // ListSectorResp sector list response
 type ListSectorResp []*SectorResp
 
+func (s ListSectorResp) String() string {
+	resp, _ := json.Marshal(s)
+	if string(resp) == "null" {
+		return "[]"
+	}
+
+	return string(resp)
+}
+
 // SectorResp sector in storage
 type SectorResp struct {
 	ID           uint64 `json:"id"`

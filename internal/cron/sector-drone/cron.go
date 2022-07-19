@@ -10,7 +10,7 @@ import (
 )
 
 type sectors interface {
-	List() (list dto.ListSectorResp)
+	List() dto.ListSectorResp
 }
 
 // Service is about adding rand count of drones on sector
