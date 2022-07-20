@@ -2,8 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -13,15 +11,13 @@ import (
 // LocateDNS locates dns by coordinates and given sectorID in url query
 func (i Implementation) LocateDNS(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Fprint(writer, "method not allowed")
+		response405(writer)
 		return
 	}
 
 	strSectorID := request.URL.Query().Get("id")
 	if strSectorID == "" {
-		writer.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(writer, "sectorID is undefined")
+		response400custom(writer, "sectorID is undefined")
 		return
 	}
 
@@ -29,15 +25,12 @@ func (i Implementation) LocateDNS(writer http.ResponseWriter, request *http.Requ
 
 	intSectorID, err := strconv.ParseInt(strSectorID, 10, 64)
 	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		log.Printf(logFormat, err)
-		fmt.Fprint(writer, "sectorID is invalid")
+		response400custom(writer, "sectorID is invalid")
 		return
 	}
 
 	if intSectorID < 0 {
-		writer.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(writer, "sectorID must be greater then or equal 0")
+		response400custom(writer, "sectorID must be greater then or equal 0")
 		return
 	}
 
@@ -47,27 +40,24 @@ func (i Implementation) LocateDNS(writer http.ResponseWriter, request *http.Requ
 	data := new(dto.DNSReq)
 	err = decoder.Decode(data)
 	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		log.Printf(logFormat, err)
-		fmt.Fprint(writer, "an error occurred")
+		response400(writer)
 		return
 	}
 
 	sector, err := i.sectors.Get(uint64(intSectorID))
 	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(writer, err)
+		response400custom(writer, err)
 		return
 	}
 
 	sectorID, err := sector.Book()
 	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(writer, err)
+		response400custom(writer, err)
 		return
 	}
 
 	resp := data.DNSRespWithSectorID(sectorID)
 	i.dns.Set(resp)
-	fmt.Fprint(writer, resp)
+
+	response200(writer, resp)
 }

@@ -85,8 +85,9 @@ func TestImplementation_LocateDNS(t *testing.T) {
 			req:        badReq4,
 		},
 		"all ok": {
-			response: `{"loc":1389.5700000000002}`,
-			req:      okReq,
+			statusCode: 200,
+			response:   `{"loc":1389.5700000000002}`,
+			req:        okReq,
 		},
 	}
 

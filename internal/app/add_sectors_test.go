@@ -37,8 +37,9 @@ func TestImplementation_AddSectors(t *testing.T) {
 			req:        badReq,
 		},
 		"all ok": {
-			response: `[{"id":0,"available_dns":12,"deployed_dns":0,"drone_count":0},{"id":1,"available_dns":10,"deployed_dns":0,"drone_count":0}]`,
-			req:      okReq,
+			statusCode: 200,
+			response:   `[{"id":0,"available_dns":12,"deployed_dns":0,"drone_count":0},{"id":1,"available_dns":10,"deployed_dns":0,"drone_count":0}]`,
+			req:        okReq,
 		},
 	}
 

@@ -1,17 +1,15 @@
 package app
 
 import (
-	"fmt"
 	"net/http"
 )
 
 // ListDNS fetches all existed dns
 func (i Implementation) ListDNS(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodGet {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Fprint(writer, "method not allowed")
+		response405(writer)
 		return
 	}
 
-	fmt.Fprint(writer, i.dns.List())
+	response200(writer, i.dns.List())
 }

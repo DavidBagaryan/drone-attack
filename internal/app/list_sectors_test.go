@@ -24,8 +24,9 @@ func TestImplementation_ListSectors(t *testing.T) {
 			req:        &http.Request{Method: "POST"},
 		},
 		"all ok, empty list": {
-			response: "[]",
-			req:      &http.Request{Method: "GET"},
+			statusCode: 200,
+			response:   "[]",
+			req:        &http.Request{Method: "GET"},
 		},
 	}
 

@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -12,8 +11,7 @@ import (
 // AddSectors adds sectors by giving params
 func (i Implementation) AddSectors(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Fprint(writer, "method not allowed")
+		response405(writer)
 		return
 	}
 
@@ -24,10 +22,9 @@ func (i Implementation) AddSectors(writer http.ResponseWriter, request *http.Req
 	err := decoder.Decode(&data)
 	if err != nil {
 		log.Printf("[ADD SECTORS]: %s", err)
-		writer.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(writer, "an error occurred")
+		response400(writer)
 		return
 	}
 
-	fmt.Fprint(writer, i.sectors.Add(data))
+	response200(writer, i.sectors.Add(data))
 }
