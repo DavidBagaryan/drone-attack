@@ -6,8 +6,8 @@ import "time"
 // but I think it is enough for this pet
 
 const (
-	// LocalDeployPort local deploy port
-	LocalDeployPort = ":2022"
+	// APIPortDefault local deploy port
+	APIPortDefault = "2022"
 
 	// SectorDroneCronDuration sector-drone cron duration
 	SectorDroneCronDuration = 9 * time.Second

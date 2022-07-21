@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/DavidBagaryan/drone-attack/internal/app"
 	"github.com/DavidBagaryan/drone-attack/internal/config"
@@ -26,5 +27,10 @@ func main() {
 	http.HandleFunc("/sector/locate", impl.LocateDNS) // sectorID passes as a query param
 	http.HandleFunc("/dns/list", impl.ListDNS)
 
-	log.Fatal(http.ListenAndServe(config.LocalDeployPort, nil))
+	apiPort := os.Getenv("API_PORT")
+	if apiPort == "" {
+		apiPort = config.APIPortDefault
+	}
+
+	log.Fatal(http.ListenAndServe(":"+apiPort, nil))
 }
