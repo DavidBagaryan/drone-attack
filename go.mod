@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/brianvoe/gofakeit/v6 v6.15.0
+	github.com/gorilla/mux v1.8.0
 	github.com/stretchr/testify v1.7.2
 )
 

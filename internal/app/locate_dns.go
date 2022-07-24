@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/DavidBagaryan/drone-attack/internal/dto"
+	"github.com/gorilla/mux"
 )
 
 // LocateDNS locates dns by coordinates and given sectorID in url query
@@ -17,11 +18,14 @@ func (i Implementation) LocateDNS(writer http.ResponseWriter, request *http.Requ
 
 	strSectorID := request.URL.Query().Get("id")
 	if strSectorID == "" {
-		response400custom(writer, "sectorID is undefined")
-		return
+		var ok bool
+		query := mux.Vars(request)
+		strSectorID, ok = query["id"]
+		if !ok {
+			response400custom(writer, "sectorID is undefined")
+			return
+		}
 	}
-
-	const logFormat = "[LOCATE DNS]: %s"
 
 	intSectorID, err := strconv.ParseInt(strSectorID, 10, 64)
 	if err != nil {
