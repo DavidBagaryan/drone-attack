@@ -18,11 +18,6 @@ func TestImplementation_ListSectors(t *testing.T) {
 		response   string
 		req        *http.Request
 	}{
-		"method not allowed": {
-			statusCode: 405,
-			response:   "method not allowed",
-			req:        &http.Request{Method: "POST"},
-		},
 		"all ok, empty list": {
 			statusCode: 200,
 			response:   "[]",

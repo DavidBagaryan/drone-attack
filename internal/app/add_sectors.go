@@ -10,11 +10,6 @@ import (
 
 // AddSectors adds sectors by giving params
 func (i Implementation) AddSectors(writer http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
-		response405(writer)
-		return
-	}
-
 	decoder := json.NewDecoder(request.Body)
 	defer request.Body.Close()
 
@@ -22,7 +17,7 @@ func (i Implementation) AddSectors(writer http.ResponseWriter, request *http.Req
 	err := decoder.Decode(&data)
 	if err != nil {
 		log.Printf("[ADD SECTORS]: %s", err)
-		response400(writer)
+		response400(writer, "an error occurred")
 		return
 	}
 

@@ -49,11 +49,6 @@ func TestImplementation_LocateDNS(t *testing.T) {
 		response   string
 		req        *http.Request
 	}{
-		"method not allowed": {
-			statusCode: 405,
-			response:   "method not allowed",
-			req:        &http.Request{Method: "GET"},
-		},
 		"sectorID is undefined": {
 			statusCode: 400,
 			response:   "sectorID is undefined",

@@ -26,11 +26,6 @@ func TestImplementation_AddSectors(t *testing.T) {
 		response   string
 		req        *http.Request
 	}{
-		"method not allowed": {
-			statusCode: 405,
-			response:   "method not allowed",
-			req:        &http.Request{Method: "PUT"},
-		},
 		"bad request": {
 			statusCode: 400,
 			response:   "an error occurred",
